@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 """OpenCV feature detectors with ros CompressedImage Topics in python.
 
 This example subscribes to a ros topic containing sensor_msgs 
@@ -44,21 +44,21 @@ class image_feature:
         self.subscriber = rospy.Subscriber("/camera/image/compressed",
             CompressedImage, self.callback,  queue_size = 10)
         if VERBOSE :
-            print "subscribed to /camera/image/compressed"
+            print ("subscribed to /camera/image/compressed")
 
 
     def callback(self, ros_data):
         '''Callback function of subscribed topic. 
         Here images get converted and features detected'''
         if VERBOSE :
-            print 'received image of type: "%s"' % ros_data.format
+            print ('received image of type: "%s"' % ros_data.format)
 
         #### direct conversion to CV2 ####
         np_arr = np.fromstring(ros_data.data, np.uint8)
         #image_np = cv2.imdecode(np_arr, cv2.CV_LOAD_IMAGE_COLOR)
         image_np = cv2.imdecode(np_arr, cv2.IMREAD_COLOR) # OpenCV >= 3.0:
         processed_imag, command = process(image_np)
-        print command,'\n'
+        print (command,'\n')
 
         rospy.loginfo(command)
 
@@ -92,7 +92,7 @@ def main(args):
     try:
         rospy.spin()
     except KeyboardInterrupt:
-        print "Shutting down ROS Image feature detector module"
+        print ("Shutting down ROS Image feature detector module")
     cv2.destroyAllWindows()
 
 if __name__ == '__main__':
